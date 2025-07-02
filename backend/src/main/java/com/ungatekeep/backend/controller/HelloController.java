@@ -8,6 +8,7 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String sayHello() {
+        System.out.println("Hello World");
         return "Hello, unGateKeep!";
     }
 }
