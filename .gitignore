@@ -1,0 +1,10 @@
+# Application configuration files
+backend/src/main/resources/application.properties
+backend/src/main/resources/application.yml
+
+# IDE files
+.DS_Store
+.idea/
+*.iml
+*.iws
+*.ipr
