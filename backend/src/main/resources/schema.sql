@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS users (
+    id VARCHAR(36) PRIMARY KEY,
+    auth_id VARCHAR(255),
+    username VARCHAR(255),
+    bio TEXT,
+    avatar_url VARCHAR(255),
+    role VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    username_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
