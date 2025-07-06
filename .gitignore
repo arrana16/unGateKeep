@@ -7,6 +7,10 @@
 *.iws
 *.ipr
 
-tests/api/users/variables.py
+# Configuration files with sensitive data
+api_tests/variables.py
+
+# Keep example file
+!api_tests/variables.py.example
 
 

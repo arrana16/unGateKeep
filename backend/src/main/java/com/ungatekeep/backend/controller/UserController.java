@@ -196,4 +196,26 @@ public class UserController {
 
         return ResponseEntity.ok(user);
     }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable String id) {
+        // Convert the path variable to UUID
+        UUID userId = UUID.fromString(id);
+
+        // Find the existing user
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        // Check if the current user has permission to delete this user
+        permissionService.assertUserAccess(existingUser.getAuthID());
+
+        // TODO: Add Auth0 user deletion logic here
+        // This would involve calling Auth0's Management API to delete the user
+
+        // Delete the user from our database
+        userRepository.delete(existingUser);
+
+        return ResponseEntity.ok(Map.of("message", "User account deleted successfully"));
+    }
 }

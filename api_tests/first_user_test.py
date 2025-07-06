@@ -3,7 +3,7 @@ import json
 import time
 import uuid
 from datetime import datetime
-from tests.api.variables import *
+from variables import *
 
 
 
@@ -232,40 +232,72 @@ def get_current_user(token):
         print(f"❌ Error getting current user: {e}")
         return None
 
+
+def delete_user(token, user_id):
+    """Delete a user account"""
+    print(f"\n❌ Deleting user with ID: {user_id}...")
+
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+
+    try:
+        response = requests.delete(f"{BASE_URL}/{user_id}", headers=headers)
+        print_response(response, "Delete User")
+
+        if response.status_code == 200:
+            print("✅ User deleted successfully")
+            # Verify deletion by attempting to get the user
+            verification = get_user_by_id(token, user_id)
+            if verification is None:
+                print("✅ Verified: User no longer exists")
+            else:
+                print("⚠️ Warning: User still exists after deletion")
+        else:
+            print(f"❌ Failed to delete user: {response.text}")
+
+        return response.status_code == 200
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error deleting user: {e}")
+        return False
+
 def run_tests():
     """Run all the API tests in sequence"""
     print("\n🧪 STARTING API TESTS 🧪")
     print("=" * 50)
-    
+
     # Get authentication token
     token = get_auth_token()
-    
+
     # Create a user
     user_id, username = create_user(token)
-    
+
     if user_id:
         # Update the username
         new_username = f"{username}_updated"
         update_username(token, user_id, new_username)
-        
+
         # Update the bio
         update_bio(token, user_id, "This is an updated bio from the test script")
-        
+
         # Update the avatar
         update_avatar(token, user_id, "https://example.com/updated_avatar.png")
-        
+
         # Try to update the role (should fail without admin privileges)
         update_role(token, user_id, "admin")
-        
+
         # Get the user by ID to verify changes
         get_user_by_id(token, user_id)
-        
+
+        # Finally, delete the user
+        delete_user(token, user_id)
+
     # Get an existing user by ID
     get_user_by_id(token, EXISTING_USER_ID)
-    
+
     # Get the current user
     get_current_user(token)
-    
+
     print("\n✅ API TESTS COMPLETED ✅")
     print("=" * 50)
 
