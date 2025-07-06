@@ -6,3 +6,7 @@
 *.iml
 *.iws
 *.ipr
+
+tests/api/users/variables.py
+
+
