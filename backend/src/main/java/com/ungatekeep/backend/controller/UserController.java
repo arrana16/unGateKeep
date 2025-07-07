@@ -147,6 +147,31 @@ public class UserController {
         return ResponseEntity.ok(Map.of("message", "Avatar updated successfully"));
     }
 
+    @PutMapping("/{id}/like_emoji")
+    public ResponseEntity<Map<String, String>> updateLikeEmoji(
+            @PathVariable String id,
+            @RequestBody Map<String, String> payload) {
+
+        // Convert the path variable to UUID
+        UUID userId = UUID.fromString(id);
+
+        // Find the existing user
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        // Check if the current user has permission to update this user
+        permissionService.assertUserAccess(existingUser.getAuthID());
+
+        // Update avatar URL (can be null)
+        existingUser.setLikeEmoji(payload.get("like_emoji"));
+        existingUser.setUpdatedAt(LocalDateTime.now());
+
+        // Save the updated user
+        userRepository.save(existingUser);
+
+        return ResponseEntity.ok(Map.of("message", "Like emoji updated successfully"));
+    }
+
     @PutMapping("/{id}/role")
     public ResponseEntity<Map<String, String>> updateRole(
             @PathVariable String id, 

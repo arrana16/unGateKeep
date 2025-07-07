@@ -1,7 +1,12 @@
 # Configuration
-BASE_URL = "http://localhost:8080/api/users"
+USERS_API_URL = "http://localhost:8080/api/users"
+POSTS_API_URL = "http://localhost:8080/api/posts"
+BASE_URL = USERS_API_URL  # For backward compatibility
+
 AUTH0_TOKEN_URL = "https://your-tenant.auth0.com/oauth/token"
 AUTH0_CLIENT_ID = "your-client-id"
 AUTH0_CLIENT_SECRET = "your-client-secret"
 AUTH0_AUDIENCE = "your-audience"
+
 EXISTING_USER_ID = "user-id-for-testing"
+EXISTING_POST_ID = "post-id-for-testing"

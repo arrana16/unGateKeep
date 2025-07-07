@@ -36,6 +36,9 @@ public class User {
     @Column(name = "username_updated_at")
     private LocalDateTime usernameUpdatedAt;
 
+    @Column(name = "like_emoji")
+    private String likeEmoji;
+
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
@@ -80,7 +83,7 @@ public class User {
 
     }
 
-    public User(UUID id, String authID, String username, String bio, String avatar_url, String role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime usernameUpdatedAt) {
+    public User(UUID id, String authID, String username, String bio, String avatar_url, String role, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime usernameUpdatedAt, String likeEmoji) {
         this.id = id;
         this.authID = authID;
         this.username = username;
@@ -90,9 +93,7 @@ public class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.usernameUpdatedAt = usernameUpdatedAt;
+        this.likeEmoji = likeEmoji;
     }
 
-    public User(UUID id, String authID, String username, String bio, String avatar_url, String role, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this(id, authID, username, bio, avatar_url, role, createdAt, updatedAt, createdAt);
-    }
 }

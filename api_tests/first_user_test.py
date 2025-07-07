@@ -161,6 +161,33 @@ def update_avatar(token, user_id, new_avatar_url):
         print(f"❌ Error updating avatar: {e}")
         return False
 
+def update_like_emoji(token, user_id, new_emoji):
+    """Update a user's like emoji"""
+    print(f"\n✏️ Updating like emoji for user {user_id}...")
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "like_emoji": new_emoji
+    }
+
+    try:
+        response = requests.put(f"{BASE_URL}/{user_id}/like_emoji", headers=headers, data=json.dumps(payload))
+        print_response(response, "Update Like Emoji")
+
+        if response.status_code == 200:
+            print("✅ Like emoji updated successfully")
+        else:
+            print(f"❌ Failed to update like emoji: {response.text}")
+
+        return response.status_code == 200
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Error updating like emoji: {e}")
+        return False
+
 def update_role(token, user_id, new_role):
     """Update a user's role (should fail without admin privileges)"""
     print(f"\n✏️ Attempting to update role for user {user_id}...")
@@ -283,11 +310,17 @@ def run_tests():
         # Update the avatar
         update_avatar(token, user_id, "https://example.com/updated_avatar.png")
 
+        # Update the like emoji
+        update_like_emoji(token, user_id, "👍")
+
         # Try to update the role (should fail without admin privileges)
         update_role(token, user_id, "admin")
 
         # Get the user by ID to verify changes
         get_user_by_id(token, user_id)
+
+        # Get the current user
+        get_current_user(token)
 
         # Finally, delete the user
         delete_user(token, user_id)
@@ -295,8 +328,7 @@ def run_tests():
     # Get an existing user by ID
     get_user_by_id(token, EXISTING_USER_ID)
 
-    # Get the current user
-    get_current_user(token)
+
 
     print("\n✅ API TESTS COMPLETED ✅")
     print("=" * 50)
